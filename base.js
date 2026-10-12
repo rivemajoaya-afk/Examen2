@@ -166,6 +166,60 @@ clearBtn.addEventListener('click', () => {
 });
     }
 
+    const obtenerDetalleSerie = async (id) => {
+        try{
+        const url `${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=es-ES`;
+        const respuesta = await fetch(url);
+        if(!respuesta.ok)
+        {
+            throw new Error (respuesta.status);
+        }
+        const serie = await respuesta.json();
+        mostrarDetalleSerie(serie);
+        }
+        catch (error) {
+            manejar(error);
+        }
+    };
+
+    const mostrarDetalleSerie = (serie) => {
+    const {
+    name,
+    overview,
+    number_of_seasons,
+    number_of_episodes,
+    genres,
+    status
+    } = serie;
+
+    const generos = genres.map((genero) => genero.name).join(', ');
+    modalBody.innerHTML = `
+        <h2 class="modal__title"></h2>
+        <p class="modal__subtitle">
+            Estado: ${status || 'No disponible'}
+        </p>
+        <div class="modal__info">
+            <p>Temporadas: ${number_of_seasons}</p>
+            <p>Episodios: ${number_of_episodes}</p>
+            <p>Géneros: ${generos || 'No disponibles'}</p>
+        </div>
+        <h3>Sinopsis</h3>
+        <p class="modal__overview"></p>
+    `;
+    modalBody.querySelector('.modal__title').textContent = name;
+    modalBody.querySelector('.modal__overview').textContent =
+    overview || 'Sin sinopsis disponible';
+    modal.classList.add('modal--show');
+};
+const cerrarModal = () => {
+    modal.classList.remove('modal--show');
+};
+modalClose.addEventListener('click', cerrarModal);
+modalOverlay.addEventListener('click', cerrarModal);
+
+
+
+
 
 
 
