@@ -132,6 +132,42 @@ seriesGrid.appendChild(tarjeta);
 });
 
 
+const buscarSeries = async () =>{
+    const texto = searchInput();
+
+    if (texto ==' ')
+    {
+        obtenerPopulares();
+    }
+    mostrarLoading();
+
+    try{
+    const url = `${BASE_URL}/search/tv?query=${encodeURIComponent(texto)}&api_key=${API_KEY}&language=es-ES`;
+    const respuesta = await fetch(url);
+    if (!respuesta.ok) {
+    throw new Error(respuesta.status);
+        }
+        const datos = await respuesta.json();
+        mostrarSeries(datos.results);
+        resultsTitle.textContent = 'Resultados de búsqueda';
+        resultsCount.textContent = `${datos.results.length} series encontradas`;
+    } catch (error) {
+    manejar(error);
+    } finally {
+     ocultarLoading();
+    }
+};
+searchInput.addEventListener('input', () => {
+    buscarSeries();
+});
+clearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    obtenerSeriesPopulares();
+});
+    }
+
+
+
 
 
 
