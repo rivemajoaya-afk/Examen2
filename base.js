@@ -1,4 +1,4 @@
-const API_KEY = 'TU_API_KEY_AQUI'; 
+const API_KEY = '46e1f4c2db4cd99e7fc684efd930f294'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
 
@@ -83,3 +83,59 @@ const obtenerPopulares = async () => {
         ocultarLoading();
     }
 };
+
+
+const crearTarjeta = (serie) => {
+    const {id, name, poster_path, first_air_date, vote_average } = serie;
+    
+    const imagen = poster_path
+    ?`${IMAGE_URL}${poster_path}`
+    : '';
+
+    const año = first_air_date
+    ? first_air_date
+    : 'N/a';
+
+    const rating = vote_average
+    ? vote_average
+    :'N/a';
+
+    const tarjeta = document.createElement('article');
+    tarjeta.classList.add('serie-card');
+
+    tarjeta.innerHTML = `
+    <div class="serie-card__poster">
+    <img
+    class="serie-card__image"
+    src="${imagen}"
+    alt="Poster de la serie">
+    <span class="serie-card__rating"> ${rating}</span>
+    </div>
+    <div class="serie-card__content">
+    <h3 class="serie-card__title"></h3>
+    <p class="serie-card__year">Año: ${año}</p>
+    </div> `;
+
+    tarjeta.querySelector('.serie-card__title').textContent = name;
+    tarjeta.addEventListener('click', () => {
+        obtenerDetalleSerie(id);
+    });
+
+    return tarjeta;
+ };
+
+ const mostrarSeries = (series) => {
+seriesGrid.innerHTML = '';
+series.forEach((serie) => {
+const tarjeta = crearTarjeta(serie);
+seriesGrid.appendChild(tarjeta);
+});
+
+
+
+
+
+
+
+
+}
