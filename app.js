@@ -130,14 +130,16 @@ series.forEach((serie) => {
 const tarjeta = crearTarjeta(serie);
 seriesGrid.appendChild(tarjeta);
 });
+ };
+
 
 
 const buscarSeries = async () =>{
     const texto = searchInput.value.trim();
 
-    if (texto ==' ')
-    {
-        obtenerPopulares();
+  if (texto === '') {
+    obtenerPopulares();
+    return;
     }
     mostrarLoading();
 
@@ -162,13 +164,12 @@ searchInput.addEventListener('input', () => {
 });
 clearBtn.addEventListener('click', () => {
     searchInput.value = '';
-    obtenerSeriesPopulares();
+    obtenerPopulares();
 });
-    }
 
     const obtenerDetalleSerie = async (id) => {
         try{
-        const url `${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=es-ES`;
+        const url = `${BASE_URL}/tv/${id}?api_key=${API_KEY}&language=es-ES`;
         const respuesta = await fetch(url);
         if(!respuesta.ok)
         {
@@ -218,27 +219,22 @@ modalClose.addEventListener('click', cerrarModal);
 modalOverlay.addEventListener('click', cerrarModal);
 
 const manejar = (error) => {
-    console.error(error);
+console.error(error);
 
-    if (error.message.includes('401')){
-        mostrarError ('API Key no vslida');
+    if (error.message.includes('401')) {
+    mostrarError('API Key invalida');
+    } else if (error instanceof TypeError) {
+        mostrarError('error de conexion');
+    } else {
+        mostrarError('Ocurrió un error');
     }
-    else if(error.message.includes('Failed to fetch'))
-    {
-     mostrarError('error de conexion');
+};
+
+retryBtn.addEventListener('click', () => {
+    if (searchInput.value.trim() !== '') {
+    buscarSeries();
+    } else {
+    obtenerPopulares();
     }
-
-obtenerSeriesPopulares();
-
-
-
-
-
-
-
-
-
-
-
-
-}
+});
+obtenerPopulares();

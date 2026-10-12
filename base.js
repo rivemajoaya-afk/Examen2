@@ -133,6 +133,7 @@ seriesGrid.appendChild(tarjeta);
  };
 
 
+
 const buscarSeries = async () =>{
     const texto = searchInput.value.trim();
 
