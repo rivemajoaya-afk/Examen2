@@ -1,3 +1,4 @@
+// María Jose Rivera Ayaviri
 const API_KEY = '46e1f4c2db4cd99e7fc684efd930f294'; 
 const BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_URL = 'https://image.tmdb.org/t/p/w500';
